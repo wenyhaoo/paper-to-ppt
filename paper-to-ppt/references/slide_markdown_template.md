@@ -1,76 +1,113 @@
 # Slide Markdown Template
 
-Create one file per slide at `slides/slide-XX.md`.
+Create one file per slide at `slides/slide-XX.md`. Use this structure exactly.
 
 ```markdown
 # Slide XX - Short Title
 
-## Narrative Role
-State why this slide exists in the overall story.
+## Slide Metadata
+- Chapter:
+- Page type:
+- Storyboard row:
+- Status: draft
 
-## Audience Takeaway
-One sentence describing what the audience should understand or believe after this slide.
+## Narrative Position
+- Narrative question:
+- Narrative role:
+- Audience takeaway:
+- Transition from previous slide:
+- Transition to next slide:
+
+## Claims and Evidence
+| Claim ID | Claim to communicate | Evidence ID | Support status | Notes |
+| --- | --- | --- | --- | --- |
+| CXX-01 |  | E001 | supported |  |
 
 ## Screen Content
 - Title:
 - Subtitle:
-- Body text:
+- On-slide text:
+  - 
 - Figure/table/visual:
 - Callouts:
+- Footer/source text:
 - Text density check:
 
-## Visual Design Prompt for image2
+## Visual Plan
+- Layout:
+- Visual hierarchy:
+- Paper figure/page crop placement:
+- Conceptual illustration slot:
+- Chart/table treatment:
+- Readability constraints:
+- Style inheritance from `analysis/style_spec.md`:
+
+## Image2 Prompt
 Create one complete 16:9 academic presentation slide as a single PNG.
 
-Style:
-- Follow the derived reference PPT style from `analysis/style_spec.md`.
-- Use consistent colors, typography, spacing, and visual hierarchy.
-- Keep text sparse and highly readable.
-- Do not create dense paragraphs.
+Use the approved style specification from `analysis/style_spec.md`.
 
-Layout:
-- Describe title position, main visual region, supporting text region, and footer/source treatment.
-- Specify where paper figures or cropped page images should be placed.
-- Specify any reserved illustration slots.
+Slide content:
+- Title:
+- On-slide text:
+- Main visual:
+- Callouts:
+- Footer/source text:
 
-Scientific accuracy:
-- Do not invent numbers, labels, charts, or experimental results.
-- Preserve paper figure content when source assets are supplied.
-- Mark generated diagrams as conceptual if they are not exact paper figures.
+Layout requirements:
+- 
 
-Required output:
-- A polished full-slide 16:9 PNG.
-- Clear academic style.
-- No decorative clutter.
+Source assets to preserve:
+- 
+
+Conceptual visuals:
+- 
+
+Scientific accuracy constraints:
+- Do not invent numbers, labels, datasets, model components, or experimental results.
+- Do not redraw exact plots, tables, formulas, or metrics unless supplied as source assets.
+- Preserve supplied paper figures/page crops faithfully.
+- Mark any newly generated diagram as conceptual.
+
+Readability constraints:
+- Keep text sparse.
+- Use large readable typography.
+- Avoid dense paragraphs.
+- Avoid decorative clutter.
+
+Output:
+- One polished full-slide 16:9 PNG.
 
 ## Source Assets
-- Paper figures:
-- Paper page crops:
-- Reference style assets:
-- Reserved illustration slots:
-- Newly generated conceptual visuals:
+| Asset ID | Path | Type | Source page/figure | How it is used |
+| --- | --- | --- | --- | --- |
+| AXX-01 |  | paper_figure / paper_page_crop / reference_style / conceptual_slot |  |  |
 
 ## Speaker Notes CN
-Write natural spoken Chinese. Keep it professional, but oral and easy to deliver.
+Write the Chinese spoken script here. It should be oral, professional, and faithful to the evidence.
 
 ## Speaker Notes EN
-Write English speaker notes aligned with the Chinese version. Do not add facts absent from the Chinese version or evidence.
+Write English speaker notes here. They must match the Chinese version in claims, order, and emphasis.
 
-## Evidence
-- E001:
-- E002:
+## Consistency Check
+| Screen element | Spoken explanation CN | Spoken explanation EN | Evidence IDs |
+| --- | --- | --- | --- |
+|  |  |  | E001 |
 
 ## Risk Check
 - Unsupported claims:
-- Needs user confirmation:
+- needs_user_confirmation:
 - Image generation risks:
 - Exact text/numbers that must be preserved:
+- External evidence used: no
 ```
 
 ## Writing Rules
 
-- Keep screen text much shorter than speaker notes.
-- Speaker notes explain the logic; slide text anchors the logic.
-- CN and EN notes must match in claims and structure.
-- Use paper figures when exact evidence matters.
-- Avoid putting too many facts on one slide. Split dense material.
+- Screen content should be much shorter than speaker notes.
+- Every non-obvious scientific claim must appear in `Claims and Evidence`.
+- CN and EN speaker notes must carry the same factual claims.
+- The `Consistency Check` must map each important screen element to the narration.
+- Use original paper figures or page crops for exact experimental evidence.
+- Use generated conceptual visuals only when they do not add scientific facts.
+- Split slides when the text density check is not clearly acceptable.

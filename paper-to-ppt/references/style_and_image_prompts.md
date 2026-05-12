@@ -1,61 +1,70 @@
 # Style and Image Prompting
 
-The style reference PPT is used to derive design rules, not to copy blindly.
+The reference PPT defines a design system to extract, not a loose vibe. Write `analysis/style_spec.md` before any slide prompt.
 
-## Style Spec Checklist
+## Style Spec Required Fields
 
-Write `analysis/style_spec.md` with:
+`analysis/style_spec.md` must include:
 
-- Slide aspect ratio and size.
+- Aspect ratio and slide size.
 - Background treatment.
-- Dominant colors and accent colors.
-- Title typography and placement.
-- Body typography and density.
-- Grid, margins, and alignment.
-- Figure treatment: borders, captions, callouts, masks.
-- Chart style: axes, labels, colors, line weight.
+- Color palette with roles: background, primary text, secondary text, accent, figure highlight.
+- Typography: title, subtitle, body, caption, label.
+- Margins, grid, alignment, and common layout patterns.
+- Title placement and hierarchy.
+- Body text density and typical line count.
+- Figure treatment: borders, crop style, caption style, callouts, highlight marks.
+- Chart/table treatment: axes, labels, color use, line weight.
 - Section divider style.
-- Footer or page-number style.
-- What to avoid.
+- Footer, source, and page-number style.
+- Allowed visual motifs.
+- Things to avoid.
+- Confidence notes: what was directly observed vs inferred.
 
-When the reference is screenshots instead of PPTX, infer visible design rules and mark them as visual observations.
+Ask the user to approve `analysis/style_spec.md` before writing `## Image2 Prompt` sections.
 
-## Prompt Rules for Full-Slide Generation
+## Image2 Prompt Rules
 
-Each prompt should include:
+Every slide prompt must be self-contained and include:
 
-1. Output format: one complete 16:9 academic PPT slide PNG.
-2. Style inheritance from `analysis/style_spec.md`.
-3. Layout with exact visual hierarchy.
-4. Slide text, kept sparse.
-5. Source asset placement instructions.
+1. "Create one complete 16:9 academic presentation slide as a single PNG."
+2. Approved style-spec inheritance.
+3. Exact on-slide text.
+4. Explicit layout and visual hierarchy.
+5. Exact source asset placement instructions.
 6. Conceptual illustration instructions, if any.
-7. Accuracy constraints.
+7. Scientific accuracy constraints.
 8. Readability constraints.
+9. Output naming target if useful.
+
+Do not use vague prompts such as "make it academic" or "use a clean style" without concrete layout, typography, density, and asset instructions.
 
 ## Text Density
 
-For most slides:
+Default limits:
 
 - Title: 6-12 words.
 - Body: 1-3 short bullets or callouts.
-- Use speaker notes for explanation.
-- Prefer diagrams, original figures, or visual comparison over paragraphs.
+- Long explanations belong in speaker notes, not on the slide.
+- Prefer original figures, visual comparisons, diagrams, or callouts over paragraphs.
 
-## Sample Render Selection
+## Random Sample Render Gate
 
-Before full generation, render three representative slides:
+After all slide Markdown files pass validation, randomly select exactly three slide files from the full deck. Do not manually choose representative slides unless the user asks.
 
-- A title or transition slide.
-- A slide using original paper figures or tables.
-- A slide with a conceptual/method visualization.
+For each selected slide:
 
-For each sample slide, generate three candidate images if the image tool supports variants. Ask the user to judge:
+1. Read only its `## Image2 Prompt` and declared source assets.
+2. Generate one full-slide image.
+3. Save it to `renders/samples/slide-XX.png`.
+4. Show the three resulting images to the user.
 
-- Style match.
-- Academic credibility.
-- Text readability.
-- Figure clarity.
-- Visual density.
+Ask the user to evaluate:
 
-Only continue to full generation after approval.
+- style match to the reference PPT
+- readability and text density
+- academic credibility
+- figure clarity
+- whether the slide matches the spoken story
+
+Only continue to final rendering after approval.

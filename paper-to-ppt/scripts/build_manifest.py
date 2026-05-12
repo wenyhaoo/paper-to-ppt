@@ -55,10 +55,13 @@ def main() -> int:
                 "markdown": str(slide_md.relative_to(project_dir)),
                 "render": str(render.relative_to(project_dir)) if render else None,
                 "title": text.splitlines()[0].lstrip("# ").strip() if text.splitlines() else "",
-                "audience_takeaway": section_body(text, "Audience Takeaway"),
+                "narrative_position": section_body(text, "Narrative Position"),
                 "source_assets": section_body(text, "Source Assets"),
-                "evidence_ids": evidence_ids(section_body(text, "Evidence")),
-                "image_prompt": section_body(text, "Visual Design Prompt for image2"),
+                "evidence_ids": evidence_ids(section_body(text, "Claims and Evidence")),
+                "image_prompt": section_body(text, "Image2 Prompt"),
+                "speaker_notes_cn": section_body(text, "Speaker Notes CN"),
+                "speaker_notes_en": section_body(text, "Speaker Notes EN"),
+                "risk_check": section_body(text, "Risk Check"),
             }
         )
 

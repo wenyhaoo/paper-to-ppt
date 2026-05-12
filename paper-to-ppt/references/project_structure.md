@@ -28,6 +28,8 @@ paper-to-ppt/<paper-slug>/
     samples/
     final/
       slide-01.png
+  render_plan.json
+  render_status.json
   deck/
     final_deck.pptx
   manifest.json
@@ -48,11 +50,13 @@ paper-to-ppt/<paper-slug>/
 id,source_type,source_file,page_or_slide,location,claim,quote_or_summary,confidence,notes
 ```
 
-`analysis/storyboard.md` should list every slide:
+`analysis/storyboard.md` must list every slide:
 
 ```markdown
-| Slide | Section | Narrative role | Audience takeaway | Evidence IDs | Source assets |
-| --- | --- | --- | --- | --- | --- |
+| Slide | Chapter | Slide title | Narrative question | Audience takeaway | Page type | Evidence IDs | Paper assets | Visual idea | Speaker-note goal |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ```
 
 `analysis/style_spec.md` should summarize only design rules inferred from the reference PPT. Avoid inventing brand rules that are not visible in the reference.
+
+`analysis/sample_slides.json` records the random sample selection used before full rendering.

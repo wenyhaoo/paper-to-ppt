@@ -3,44 +3,49 @@
 Default evidence sources:
 
 1. The paper.
-2. User-provided reference materials, including style PPT, screenshots, notes, or supplementary files.
+2. User-provided materials, including style PPT, screenshots, notes, or supplementary files.
 
-External sources are prohibited unless the user explicitly allows them. When used, label them as external and keep them separate from paper evidence.
+External sources are prohibited unless the user explicitly allows them. When used, label them as `external` and keep them separate from paper evidence.
 
-## Evidence Discipline
+## Evidence Table
 
-- Register key claims in `analysis/evidence_table.csv`.
-- Cite evidence IDs in every slide Markdown file.
-- Speaker notes may explain, connect, and simplify, but they must not add unsupported facts.
-- Do not invent dataset names, metric values, model components, baselines, author intent, or limitations.
-- If a claim is plausible but not explicit, write it as an interpretation and mark it for user confirmation.
+`analysis/evidence_table.csv` must contain:
 
-## High-Risk Content
+```csv
+id,source_type,source_file,page_or_slide,location,claim,quote_or_summary,confidence,notes
+```
 
-Treat these as high risk and verify against the paper:
+Use IDs such as `E001`, `E002`, `E003`.
 
-- Numerical results and rankings.
-- Dataset names and sizes.
-- Model names, module names, and equations.
-- Causal claims.
-- Claims about novelty or superiority.
-- Limitations and failure cases.
-- Related-work comparisons.
+## Claim Discipline
+
+- Every slide must include a `Claims and Evidence` table.
+- Every key claim in speaker notes must be represented in that table.
+- Use `supported` only when the paper or user material directly supports the claim.
+- Use `interpretation` for synthesis that is reasonable but not directly stated.
+- Use `needs_user_confirmation` when support is missing or ambiguous.
+- Use `external` only when the user explicitly allowed external retrieval.
+
+## Never Invent
+
+Do not invent:
+
+- numerical results or rankings
+- dataset names, sizes, or splits
+- model names, modules, losses, equations, or implementation details
+- baselines
+- author intent
+- limitations or failure cases
+- related-work claims
+- causal claims
 
 ## Visual Evidence Rules
 
-- Do not ask an image model to redraw exact charts, tables, formulas, or numeric experimental results.
+- Do not ask image2 to redraw exact charts, tables, formulas, or numeric experimental results.
 - Use original paper figures or page crops for exact evidence.
-- Use generated visuals only for conceptual illustration, section transitions, simplified diagrams, or background imagery.
-- Label conceptual visuals as conceptual in the prompt and slide Markdown.
+- Generated visuals are allowed for conceptual explanation, section transitions, simplified mechanisms, or visual emphasis.
+- Mark generated visuals as conceptual in `Source Assets`, `Visual Plan`, and `Image2 Prompt`.
 
-## Risk Labels
+## Before Final PPTX
 
-Use these labels in slide files:
-
-- `supported`: directly supported by paper or user material.
-- `interpretation`: reasonable synthesis from supported facts.
-- `needs_user_confirmation`: not sufficiently supported.
-- `external`: from approved external source.
-
-Any `needs_user_confirmation` item should be surfaced before final deck assembly.
+Before final assembly, surface any remaining `needs_user_confirmation` items. The final answer must not hide them.

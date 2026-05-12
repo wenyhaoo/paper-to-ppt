@@ -8,7 +8,7 @@ The skill lives in [`paper-to-ppt/`](paper-to-ppt/). It supports:
 - evidence table discipline to reduce hallucinations
 - paper figure reuse and reserved illustration slots
 - one Markdown file per slide with image prompts and CN/EN speaker notes
-- sample full-slide image approval before full generation
+- random three-slide full-image sample approval before full generation
 - final PPTX assembly from rendered slide images
 
 ## Install
@@ -36,3 +36,13 @@ Some helper scripts use optional Python packages:
 - `python-pptx` for deeper PPTX style inspection
 
 Final PPTX assembly has a standard-library fallback, so it can still package full-slide images without `python-pptx`.
+
+## Workflow Gates
+
+The skill is intentionally gated:
+
+1. Approve narrative outline and slide storyboard.
+2. Approve the extracted PPT style specification.
+3. Validate every slide Markdown file.
+4. Randomly render exactly three sample slides for approval.
+5. Render all slides and assemble the PPTX only after approval.

@@ -1,29 +1,54 @@
 # Narrative Workflow
 
-Run a collaborative planning loop before slide generation.
+This skill is not a one-shot deck writer. It must behave like a planning partner before slide generation.
 
-## Default Inference
+## Planning Loop
 
-Infer initial defaults from the paper:
+Run this loop until the user approves:
 
-- Talk length: estimate from paper complexity and likely slide count.
-- Slide count: start with 10-16 for a standard paper presentation unless the paper is unusually short or broad.
-- Audience: assume technically literate academic audience.
-- Language: screen text can be concise English or bilingual depending on the reference style; speaker notes must be CN/EN.
-- External search: off.
+1. Present an initial reading of the paper's core story:
+   - central research question
+   - why the question matters
+   - gap/tension in prior work or current practice
+   - core idea or method
+   - evidence chain
+   - main conclusion and limitations
+2. Ask for focused feedback on the story, not on cosmetic slide design.
+3. Revise the story and record it in `analysis/narrative_outline.md`.
+4. Propose chapter structure.
+5. For each chapter, state:
+   - the chapter's narrative question
+   - the audience belief change
+   - the evidence needed
+   - the transition into the next chapter
+6. Propose a slide-by-slide storyboard in `analysis/storyboard.md`.
+7. Ask the user to approve the storyboard before slide Markdown creation.
 
-Ask the user only when the inferred default would change the deck's core logic.
+If the user gives vague feedback, revise proactively and show a sharper version instead of asking for many metadata inputs.
 
-## Narrative Design Steps
+## Required Storyboard Columns
 
-1. Identify the paper's central research question.
-2. Identify the prior gap or tension that makes the work necessary.
-3. Identify the proposed method or insight.
-4. Identify the evidence chain: setup, experiments, results, ablations, limitations.
-5. Decide the audience's intended belief change after each chapter.
-6. Draft chapter outline.
-7. Draft slide-by-slide storyboard.
-8. Ask for user approval before writing individual slide files.
+`analysis/storyboard.md` must contain this table:
+
+```markdown
+| Slide | Chapter | Slide title | Narrative question | Audience takeaway | Page type | Evidence IDs | Paper assets | Visual idea | Speaker-note goal |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+```
+
+Page type should be one of:
+
+- `title`
+- `section`
+- `problem`
+- `gap`
+- `method`
+- `mechanism`
+- `experiment`
+- `result`
+- `analysis`
+- `limitation`
+- `takeaway`
+- `appendix`
 
 ## Slide Narrative Rule
 
@@ -32,24 +57,26 @@ Every slide must answer:
 - What question is this slide resolving?
 - What should the audience understand by the end?
 - Which evidence supports that understanding?
-- Why is this slide needed at this position in the story?
+- Which paper figure/page crop should be reused, if any?
+- What should be spoken that is not written on the slide?
+- Why is this slide placed here rather than earlier or later?
 
-If a slide cannot answer these, merge it, remove it, or turn it into an appendix candidate.
+If a slide cannot answer these, merge it, remove it, or move it to appendix.
 
-## Common Academic Deck Shape
+## Default Structure
 
-Use only as a starting point:
+Use this only as a starting point:
 
 1. Title and one-sentence thesis.
 2. Problem context.
-3. Gap or limitation in existing work.
-4. Core idea or contribution.
-5. Method overview.
-6. Key technical details.
+3. Gap or limitation.
+4. Paper's core contribution.
+5. Method or mechanism overview.
+6. Key technical detail.
 7. Experimental setup or data.
-8. Main results.
-9. Deeper analysis, ablation, or mechanism.
-10. Limitations.
+8. Main result.
+9. Deeper analysis, ablation, or interpretation.
+10. Limitation.
 11. Takeaways and discussion.
 
-For method-heavy papers, allocate more pages to mechanism and implementation. For empirical papers, allocate more pages to setup, results, and interpretation.
+Method-heavy papers should spend more slides on mechanism. Empirical papers should spend more slides on setup, results, and interpretation.
