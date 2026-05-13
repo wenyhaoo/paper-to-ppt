@@ -34,9 +34,13 @@ Create one file per slide at `slides/slide-XX.md`. Use this structure exactly.
 - Text density check:
 
 ## Visual Plan
+- Layout archetype:
+- Composition complexity:
+- Difference from adjacent slides:
 - Layout:
 - Visual hierarchy:
-- Paper figure/page crop placement:
+- Paper figure placement:
+- Page crop fallback:
 - Conceptual illustration slot:
 - Chart/table treatment:
 - Readability constraints:
@@ -55,7 +59,10 @@ Slide content:
 - Footer/source text:
 
 Layout requirements:
-- 
+- Layout archetype:
+- Composition complexity:
+- Use 2-4 clear visual zones.
+- Make this slide structurally different from adjacent slides.
 
 Source assets to preserve:
 - 
@@ -67,6 +74,7 @@ Scientific accuracy constraints:
 - Do not invent numbers, labels, datasets, model components, or experimental results.
 - Do not redraw exact plots, tables, formulas, or metrics unless supplied as source assets.
 - Preserve supplied paper figures/page crops faithfully.
+- Prefer extracted paper figures from `assets/paper_figures/`; use full-page crops only as fallback.
 - Mark any newly generated diagram as conceptual.
 
 Readability constraints:
@@ -81,7 +89,7 @@ Output:
 ## Source Assets
 | Asset ID | Path | Type | Source page/figure | How it is used |
 | --- | --- | --- | --- | --- |
-| AXX-01 |  | paper_figure / paper_page_crop / reference_style / conceptual_slot |  |  |
+| AXX-01 |  | paper_figure / paper_page_fallback / reference_style / conceptual_slot |  |  |
 
 ## Speaker Notes CN
 Write the Chinese spoken script here. It should be oral, professional, and faithful to the evidence.
@@ -109,5 +117,7 @@ Write English speaker notes here. They must match the Chinese version in claims,
 - CN and EN speaker notes must carry the same factual claims.
 - The `Consistency Check` must map each important screen element to the narration.
 - Use original paper figures or page crops for exact experimental evidence.
+- Prefer `paper_figure`; use `paper_page_fallback` only when figure extraction failed.
 - Use generated conceptual visuals only when they do not add scientific facts.
 - Split slides when the text density check is not clearly acceptable.
+- Avoid repeating the same layout archetype across adjacent slides.

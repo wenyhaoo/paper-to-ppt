@@ -21,6 +21,7 @@ Run this loop until the user approves:
    - the audience belief change
    - the evidence needed
    - the transition into the next chapter
+   - the layout archetype family that best supports the chapter's visual logic
 6. Propose a slide-by-slide storyboard in `analysis/storyboard.md`.
 7. Ask the user to approve the storyboard before slide Markdown creation.
 
@@ -31,8 +32,8 @@ If the user gives vague feedback, revise proactively and show a sharper version 
 `analysis/storyboard.md` must contain this table:
 
 ```markdown
-| Slide | Chapter | Slide title | Narrative question | Audience takeaway | Page type | Evidence IDs | Paper assets | Visual idea | Speaker-note goal |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Slide | Chapter | Slide title | Narrative question | Audience takeaway | Page type | Layout archetype | Evidence IDs | Paper assets | Visual idea | Speaker-note goal |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ```
 
 Page type should be one of:
@@ -58,10 +59,20 @@ Every slide must answer:
 - What should the audience understand by the end?
 - Which evidence supports that understanding?
 - Which paper figure/page crop should be reused, if any?
+- Which layout archetype makes this slide visually distinct while serving the story?
 - What should be spoken that is not written on the slide?
 - Why is this slide placed here rather than earlier or later?
 
 If a slide cannot answer these, merge it, remove it, or move it to appendix.
+
+## Layout Variety Rule
+
+Before user approval, scan the storyboard:
+
+- Do not use the same layout archetype on adjacent slides.
+- For decks of 8 or more slides, use at least five distinct layout archetypes.
+- Reuse a layout only when the repeated structure itself helps the narrative, such as a controlled comparison across related results.
+- Prefer more complex academic compositions over repeated title-plus-bullets, while keeping text sparse and readable.
 
 ## Default Structure
 

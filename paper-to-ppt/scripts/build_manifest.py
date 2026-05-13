@@ -56,6 +56,7 @@ def main() -> int:
                 "render": str(render.relative_to(project_dir)) if render else None,
                 "title": text.splitlines()[0].lstrip("# ").strip() if text.splitlines() else "",
                 "narrative_position": section_body(text, "Narrative Position"),
+                "visual_plan": section_body(text, "Visual Plan"),
                 "source_assets": section_body(text, "Source Assets"),
                 "evidence_ids": evidence_ids(section_body(text, "Claims and Evidence")),
                 "image_prompt": section_body(text, "Image2 Prompt"),

@@ -20,6 +20,8 @@ Finish with a PPTX, not just an outline. The required artifacts are:
 - `analysis/narrative_outline.md`
 - `analysis/storyboard.md`
 - `analysis/style_spec.md`
+- `analysis/figure_inventory.json`
+- `analysis/figure_inventory.md`
 - `slides/slide-XX.md` for every slide
 - `renders/samples/` with exactly three random sample renders for user review
 - `renders/final/slide-XX.png` for every slide
@@ -39,7 +41,8 @@ Follow these phases in order. Do not skip gates.
 1. Run `scripts/create_project.py` to create the project folder.
 2. Extract paper text, page images, and figure candidates with `scripts/extract_pdf_assets.py` when the paper is PDF.
 3. Inspect the reference PPT with `scripts/inspect_ppt_style.py` when it is PPTX. If the style reference is screenshots/images, inspect them visually and record observations in `analysis/style_spec.md`.
-4. Build an initial evidence table from the paper. Use only paper content and user-provided materials by default.
+4. Inspect `analysis/figure_inventory.md` and treat extracted paper figures as the primary visual asset pool. Use full-page screenshots only as fallback.
+5. Build an initial evidence table from the paper. Use only paper content and user-provided materials by default.
 
 ### Phase 2: Multi-Turn Narrative Planning
 
@@ -47,7 +50,7 @@ Read `references/narrative_workflow.md`. Work like plan mode:
 
 1. Propose the paper's core story in plain language.
 2. Propose chapter structure and the role of each chapter.
-3. Propose a slide-by-slide storyboard where every slide has a narrative job and evidence IDs.
+3. Propose a slide-by-slide storyboard where every slide has a narrative job, evidence IDs, paper figure assets, and a layout archetype.
 4. Ask the user to revise or approve.
 5. Iterate until the user approves both `analysis/narrative_outline.md` and `analysis/storyboard.md`.
 
@@ -55,10 +58,10 @@ Do not write per-slide Markdown before this approval.
 
 ### Phase 3: Style Specification
 
-Read `references/style_and_image_prompts.md`.
+Read `references/style_and_image_prompts.md` and `references/layout_patterns.md`.
 
 1. Convert the reference PPT/style observations into `analysis/style_spec.md`.
-2. Include layout, color, typography, density, figure treatment, chart treatment, and what to avoid.
+2. Include layout, color, typography, density, figure treatment, chart treatment, layout archetype rules, and what to avoid.
 3. Ask the user to approve the style spec.
 
 Do not write image2 prompts before this approval.
@@ -75,6 +78,7 @@ For every storyboarded slide, create `slides/slide-XX.md`. Each file must contai
 - claims mapped to evidence IDs
 - sparse screen content
 - page design / visual plan
+- layout archetype and composition complexity
 - a complete image2 prompt for a single full-slide PNG
 - source assets, including reused paper figures or page crops
 - reserved illustration slots when needed
@@ -84,6 +88,8 @@ For every storyboarded slide, create `slides/slide-XX.md`. Each file must contai
 - hallucination and image-generation risk checks
 
 Run `scripts/validate_slide_md.py` and fix issues until it passes.
+
+The deck must not collapse into one repeated structure. Adjacent slides should use different layout archetypes, and a normal-length deck should use at least five layout archetypes unless the user explicitly asks for a minimal template.
 
 ### Phase 5: Random Sample Rendering Gate
 
@@ -116,14 +122,18 @@ Never invent facts, datasets, metrics, model details, limitations, or related-wo
 
 ## Image2 Contract
 
-The image prompt must generate a complete 16:9 academic PPT slide as one PNG. It must not ask the image model to invent precise scientific content. Exact charts, tables, formulas, and numeric results must come from paper figures or page crops, not from regenerated artwork.
+The image prompt must generate a complete 16:9 academic PPT slide as one PNG. It must not ask the image model to invent precise scientific content. Exact charts, tables, formulas, and numeric results must come from extracted paper figures first, paper page crops second, and never from regenerated artwork.
 
 Use generated visuals only for conceptual illustrations, simplified mechanisms, transitions, and visual emphasis. Mark them as conceptual.
+
+## Paper Figure Policy
+
+Use `analysis/figure_inventory.md` before slide design. Prefer entries in `assets/paper_figures/` over `assets/paper_pages/`. If figure extraction fails and a page screenshot is used instead, mark the asset as `paper_page_fallback` in the slide's `Source Assets` table and explain the fallback in `Risk Check`.
 
 ## Scripts
 
 - `scripts/create_project.py`: create the project folder and starter files.
-- `scripts/extract_pdf_assets.py`: extract PDF text, page renders, and embedded image candidates.
+- `scripts/extract_pdf_assets.py`: extract PDF text, page renders, embedded images, visual-block crops, caption-based figure crops, and figure inventory files.
 - `scripts/inspect_ppt_style.py`: inspect PPTX dimensions, fonts, colors, pictures, and layout statistics.
 - `scripts/select_sample_slides.py`: randomly select exactly three slides for sample rendering.
 - `scripts/build_render_plan.py`: build sample or final render plans from slide Markdown prompts.

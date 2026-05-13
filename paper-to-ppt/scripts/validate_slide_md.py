@@ -45,6 +45,28 @@ def evidence_ids(text: str) -> set[str]:
     return set(re.findall(r"\bE\d{3,}\b", text))
 
 
+def slide_number(path: Path) -> int:
+    match = re.search(r"slide-(\d+)", path.stem)
+    return int(match.group(1)) if match else 0
+
+
+def extract_bullet_field(section: str, label: str) -> str:
+    pattern = re.compile(rf"^\s*-\s*{re.escape(label)}\s*:\s*(.+?)\s*$", re.IGNORECASE | re.MULTILINE)
+    match = pattern.search(section)
+    return match.group(1).strip() if match else ""
+
+
+def figure_inventory_count(project_dir: Path) -> int:
+    path = project_dir / "analysis" / "figure_inventory.json"
+    if not path.exists():
+        return 0
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return 0
+    return int(data.get("figure_count") or len(data.get("figures", [])))
+
+
 def load_evidence_ids(project_dir: Path) -> set[str]:
     path = project_dir / "analysis" / "evidence_table.csv"
     if not path.exists():
@@ -113,13 +135,27 @@ def validate_file(path: Path, known_evidence_ids: set[str]) -> list[str]:
     prompt = section_body(text, "Image2 Prompt")
     prompt_lower = prompt.lower()
     if prompt:
-        for required in ["16:9", "single png", "do not invent", "style_spec.md"]:
+        for required in ["16:9", "single png", "do not invent", "style_spec.md", "layout archetype"]:
             if required not in prompt_lower:
                 issues.append(f"Image2 Prompt should include constraint/reference: {required}")
+        if "2-4" not in prompt_lower and "two to four" not in prompt_lower:
+            issues.append("Image2 Prompt should require 2-4 clear visual zones.")
+
+    visual_plan = section_body(text, "Visual Plan")
+    layout_archetype = extract_bullet_field(visual_plan, "Layout archetype")
+    if visual_plan:
+        if not layout_archetype:
+            issues.append("Visual Plan must specify Layout archetype.")
+        if not extract_bullet_field(visual_plan, "Composition complexity"):
+            issues.append("Visual Plan must specify Composition complexity.")
+        if not extract_bullet_field(visual_plan, "Difference from adjacent slides"):
+            issues.append("Visual Plan must specify Difference from adjacent slides.")
 
     source_assets = section_body(text, "Source Assets")
     if source_assets and not has_non_placeholder_table_row(source_assets):
         issues.append("Source Assets needs at least one completed asset row or conceptual slot row.")
+    if "paper_page_fallback" in source_assets and "fallback" not in section_body(text, "Risk Check").lower():
+        issues.append("paper_page_fallback assets must be explained in Risk Check.")
 
     consistency = section_body(text, "Consistency Check")
     if consistency:
@@ -147,6 +183,53 @@ def validate_file(path: Path, known_evidence_ids: set[str]) -> list[str]:
     return issues
 
 
+def validate_deck_layouts(files: list[Path]) -> tuple[list[str], dict[str, str]]:
+    issues: list[str] = []
+    layouts: dict[str, str] = {}
+    for file in sorted(files, key=slide_number):
+        text = file.read_text(encoding="utf-8")
+        visual_plan = section_body(text, "Visual Plan")
+        layout = extract_bullet_field(visual_plan, "Layout archetype")
+        layouts[file.name] = layout
+
+    ordered = sorted(files, key=slide_number)
+    for previous, current in zip(ordered, ordered[1:]):
+        prev_layout = layouts.get(previous.name, "").lower()
+        curr_layout = layouts.get(current.name, "").lower()
+        if prev_layout and curr_layout and prev_layout == curr_layout:
+            issues.append(
+                f"Adjacent slides reuse layout archetype '{curr_layout}': {previous.name}, {current.name}"
+            )
+
+    unique_layouts = {layout.lower() for layout in layouts.values() if layout}
+    slide_count = len(files)
+    if slide_count >= 8 and len(unique_layouts) < 5:
+        issues.append(
+            f"Deck should use at least 5 layout archetypes for {slide_count} slides; found {len(unique_layouts)}."
+        )
+    elif 4 <= slide_count < 8 and len(unique_layouts) < 3:
+        issues.append(
+            f"Deck should use at least 3 layout archetypes for {slide_count} slides; found {len(unique_layouts)}."
+        )
+    return issues, layouts
+
+
+def validate_figure_usage(project_dir: Path, files: list[Path]) -> list[str]:
+    issues: list[str] = []
+    count = figure_inventory_count(project_dir)
+    if count <= 0 or len(files) < 4:
+        return issues
+    combined_assets = "\n".join(
+        section_body(file.read_text(encoding="utf-8"), "Source Assets").lower()
+        for file in files
+    )
+    if "paper_figure" not in combined_assets:
+        issues.append(
+            "Figure inventory contains extracted figures, but no slide uses a paper_figure asset."
+        )
+    return issues
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("project_dir", help="Project directory containing slides/*.md.")
@@ -159,11 +242,13 @@ def main() -> int:
         raise SystemExit(f"Slides directory not found: {slides_dir}")
 
     known_evidence_ids = load_evidence_ids(project_dir)
-    files = sorted(slides_dir.glob("slide-*.md"))
+    files = sorted(slides_dir.glob("slide-*.md"), key=slide_number)
     report = {
         "project_dir": str(project_dir),
         "slide_count": len(files),
         "known_evidence_count": len(known_evidence_ids),
+        "figure_inventory_count": figure_inventory_count(project_dir),
+        "deck_issues": [],
         "files": [],
         "ok": True,
     }
@@ -182,11 +267,22 @@ def main() -> int:
             }
         )
 
+    deck_issues, layouts = validate_deck_layouts(files)
+    deck_issues.extend(validate_figure_usage(project_dir, files))
+    report["layout_archetypes"] = layouts
+    report["deck_issues"] = deck_issues
+    if deck_issues:
+        report["ok"] = False
+
     if args.json:
         print(json.dumps(report, ensure_ascii=False, indent=2))
     else:
         status = "OK" if report["ok"] else "ISSUES"
         print(f"Slide Markdown validation: {status}")
+        if report["deck_issues"]:
+            print("- Deck-level issues")
+            for issue in report["deck_issues"]:
+                print(f"  - {issue}")
         for item in report["files"]:
             if item["issues"]:
                 print(f"- {item['file']}")

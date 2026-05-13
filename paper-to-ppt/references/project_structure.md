@@ -16,6 +16,8 @@ paper-to-ppt/<paper-slug>/
   analysis/
     paper_text.md
     paper_assets.json
+    figure_inventory.json
+    figure_inventory.md
     style_inspection.json
     style_spec.md
     evidence_table.csv
@@ -53,10 +55,12 @@ id,source_type,source_file,page_or_slide,location,claim,quote_or_summary,confide
 `analysis/storyboard.md` must list every slide:
 
 ```markdown
-| Slide | Chapter | Slide title | Narrative question | Audience takeaway | Page type | Evidence IDs | Paper assets | Visual idea | Speaker-note goal |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Slide | Chapter | Slide title | Narrative question | Audience takeaway | Page type | Layout archetype | Evidence IDs | Paper assets | Visual idea | Speaker-note goal |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ```
 
 `analysis/style_spec.md` should summarize only design rules inferred from the reference PPT. Avoid inventing brand rules that are not visible in the reference.
 
 `analysis/sample_slides.json` records the random sample selection used before full rendering.
+
+`analysis/figure_inventory.md` is the human-readable catalog of extracted paper figures. Prefer these assets over full page screenshots in slide design.

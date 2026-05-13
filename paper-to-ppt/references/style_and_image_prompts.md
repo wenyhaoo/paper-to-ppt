@@ -11,6 +11,7 @@ The reference PPT defines a design system to extract, not a loose vibe. Write `a
 - Color palette with roles: background, primary text, secondary text, accent, figure highlight.
 - Typography: title, subtitle, body, caption, label.
 - Margins, grid, alignment, and common layout patterns.
+- Layout archetypes that fit the reference style and how they may vary across slides.
 - Title placement and hierarchy.
 - Body text density and typical line count.
 - Figure treatment: borders, crop style, caption style, callouts, highlight marks.
@@ -23,6 +24,8 @@ The reference PPT defines a design system to extract, not a loose vibe. Write `a
 
 Ask the user to approve `analysis/style_spec.md` before writing `## Image2 Prompt` sections.
 
+Read `references/layout_patterns.md` before assigning slide layouts. Select a layout archetype for every slide based on narrative need, available paper figures, and style reference constraints.
+
 ## Image2 Prompt Rules
 
 Every slide prompt must be self-contained and include:
@@ -30,14 +33,14 @@ Every slide prompt must be self-contained and include:
 1. "Create one complete 16:9 academic presentation slide as a single PNG."
 2. Approved style-spec inheritance.
 3. Exact on-slide text.
-4. Explicit layout and visual hierarchy.
+4. Explicit layout archetype, composition complexity, and visual hierarchy.
 5. Exact source asset placement instructions.
 6. Conceptual illustration instructions, if any.
 7. Scientific accuracy constraints.
 8. Readability constraints.
 9. Output naming target if useful.
 
-Do not use vague prompts such as "make it academic" or "use a clean style" without concrete layout, typography, density, and asset instructions.
+Do not use vague prompts such as "make it academic" or "use a clean style" without concrete layout, typography, density, and asset instructions. Do not reuse the same simple structure across slides.
 
 ## Text Density
 
@@ -47,6 +50,17 @@ Default limits:
 - Body: 1-3 short bullets or callouts.
 - Long explanations belong in speaker notes, not on the slide.
 - Prefer original figures, visual comparisons, diagrams, or callouts over paragraphs.
+
+## Layout Diversity
+
+Each prompt should state:
+
+- selected layout archetype
+- why the layout fits this slide's narrative role
+- 2-4 visual zones, such as thesis strip, figure panel, zoom panel, evidence callout, mechanism path, comparison rail, or footer/source band
+- how this slide differs from nearby slides
+
+Complex does not mean crowded. Use richer spatial composition, not more text.
 
 ## Random Sample Render Gate
 

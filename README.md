@@ -7,6 +7,8 @@ The skill lives in [`paper-to-ppt/`](paper-to-ppt/). It supports:
 - narrative co-design before slide generation
 - evidence table discipline to reduce hallucinations
 - paper figure reuse and reserved illustration slots
+- stronger extraction of paper figures into a reusable figure inventory
+- varied slide layout archetypes instead of repeated templates
 - one Markdown file per slide with image prompts and CN/EN speaker notes
 - random three-slide full-image sample approval before full generation
 - final PPTX assembly from rendered slide images

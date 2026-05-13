@@ -99,8 +99,8 @@ def main() -> int:
     )
     (project_dir / "analysis" / "storyboard.md").write_text(
         "# Storyboard\n\n"
-        "| Slide | Section | Narrative role | Audience takeaway | Evidence IDs | Source assets |\n"
-        "| --- | --- | --- | --- | --- | --- |\n",
+        "| Slide | Chapter | Slide title | Narrative question | Audience takeaway | Page type | Layout archetype | Evidence IDs | Paper assets | Visual idea | Speaker-note goal |\n"
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n",
         encoding="utf-8",
     )
     (project_dir / "analysis" / "style_spec.md").write_text(
